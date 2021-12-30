@@ -1,6 +1,8 @@
 
 const inquirer = require('inquirer');
 const generateMarkdown = require('./generateMarkdown');
+const generateEngineer = require('./generateEngineer');
+const generateIntern = require('./generateIntern');
 const fs = require('fs');
 const questions = [];
 const promptManager = () => {
@@ -61,6 +63,11 @@ const promptManager = () => {
     .then(data => {
         questions.push(data)
         console.log(questions);
+        fs.writeFile("./index.html", generateMarkdown(questions), err => {
+          if (err) throw err;
+          console.log("File successfully written");
+      })
+        
     });
 };
 
@@ -209,12 +216,25 @@ const promptMembers = () => {
       
     ])
     .then(data => {
-        questions.push(data)
-        console.log(questions);
-        if (data.askAgain) {
+        if (data.continue === 'Intern') {
+          fs.appendFile("./index.html", generateIntern(data), err => {
+            if (err) throw err;
+            console.log("File successfully written");
+        })
+        };
+        if (data.continue === 'Engineer') {
+          fs.appendFile("./index.html", generateEngineer(data), err => {
+            if (err) throw err;
+            console.log("File successfully written");
+        })
+        };
+        if (data.askAgain) {     
           promptMembers();
       } else {
-        return generateMarkdown(questions);
+        fs.appendFile("./index.html", '</div> </body> </HTML>', err => {
+          if (err) throw err;
+          console.log("File successfully written");
+      })
       }
     })
   };
@@ -222,9 +242,3 @@ const promptMembers = () => {
 
 promptManager()
 .then(promptMembers)
-.then(generated => {
-  fs.writeFile("./index.html", generated, err => {
-    if (err) throw err;
-    console.log("File successfully written");
-})
-})

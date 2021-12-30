@@ -1,0 +1,20 @@
+.top {
+    text-align: center;
+    background-color: rgb(201, 87, 87);
+    color: white;
+    padding-top: 2.5%;
+    padding-bottom: 2.5%;
+}
+
+h1{
+    color: white;
+}
+
+.tBoxes {
+    background-color: lightblue;
+    margin: 2%;
+}
+
+.bBoxes {
+    background-color: white;
+}
